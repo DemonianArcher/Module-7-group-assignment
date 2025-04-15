@@ -1,0 +1,31 @@
+Transaction ID,Account number,Date,Transaction type,Amount,Currency,Description
+1,1001,2023-03-01,deposit,1000,CAD,Salary
+2,1002,2023-03-01,deposit,1500,CAD,Salary
+3,1001,2023-03-02,withdrawal,200,CAD,Groceries
+4,1001,2023-03-03,transfer,500,CAD,Transfer to Savings
+5,1002,2023-03-03,withdrawal,300,CAD,Shopping
+6,1002,2023-03-05,deposit,100,EUR,Gift
+7,1001,2023-03-07,withdrawal,100,CAD,Bills
+8,1002,2023-03-10,deposit,200,CAD,Refund
+9,1001,2023-03-12,withdrawal,150,CAD,Entertainment
+10,1002,2023-03-12,transfer,250,CAD,Transfer to Savings
+11,1001,2023-03-13,deposit,12000,CAD,Car Sale
+12,1002,2023-03-14,withdrawal,11000,CAD,House Down Payment
+13,1001,2023-03-14,deposit,250,XRP,Crypto Investment
+14,1002,2023-03-14,deposit,450,LTC,Crypto Investment
+15,1003,2023-03-01,deposit,5000,CAD,Salary
+16,1004,2023-03-01,deposit,11500,CAD,Salary
+17,1005,2023-03-02,withdrawal,2200,CAD,Groceries
+18,1006,2023-03-03,transfer,5050,CAD,Transfer to Savings
+19,1007,2023-03-03,withdrawal,1300,CAD,Shopping
+20,1003,2023-03-05,deposit,1100,EUR,Gift
+21,1004,2023-03-07,withdrawal,1200,CAD,Bills
+22,1005,2023-03-10,deposit,222,CAD,Refund
+23,1006,2023-03-12,withdrawal,155,CAD,Entertainment
+24,1007,2023-03-12,transfer,252,CAD,Transfer to Savings
+25,1003,2023-03-13,deposit,1200,CAD,Car Sale
+26,1004,2023-03-14,withdrawal,1100,CAD,House Down Payment
+27,1005,2023-03-14,deposit,2030,XRP,Crypto Investment
+28,1006,2023-03-14,deposit,1520,LTC,Crypto Investment
+29,1007,2023-03-01,deposit,100,CAD,Salary
+30,1003,2023-03-01,deposit,150,CAD,Salary
