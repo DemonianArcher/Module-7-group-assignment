@@ -113,7 +113,7 @@ class DataProcessor:
         dictionary. It also checks to see if the transaction type is deposit
         then it adds the amount to balance and total deposits. Similarly
         if the transaction type is withdrawal it subtracts from balance
-        and total withdrawals.
+        and adds to total withdrawals.
 
         Args:
              transaction (dict): The transaction data dictionary
