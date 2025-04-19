@@ -1,19 +1,38 @@
-"""REQUIRED MODULE DOCUMENTATION"""
+"""The DataProcessor class processes financial transactions. The transactions
+are added into the transaction list. The transaction list contains dictionaries
+of the transactions data information.
+The methods in DataProcessor class also check for suspicious transactions,
+generates account sumaries and also computes transaction statistics.
+"""
 
-__author__ = ""
-__version__ = ""
+__author__ = "Muhammad Rahmani"
+__version__ = "17-April-2025"
 
 class DataProcessor:
-    """REQUIRED: CLASS DOCSTRING"""
+    """The data processor class processes financial transaction
+    data.
+    """
 
     LARGE_TRANSACTION_THRESHOLD = 10000
-    """REQUIRED CLASS FIELD DOCUMENTATION"""
+    """LARGE_TRANSACTION_THRESHOLD sets a threshold of 10000 dollars.
+    Any amount above this threshold is then added to the 
+    suspicious_transactions list
+    """
 
     UNCOMMON_CURRENCIES = ["XRP", "LTC"]
-    """REQUIRED CLASS FIELD DOCUMENTATION"""
+    """If the currencies in the UNCOMMON_CURRENCIES list is found, then
+    those currencies are added to the suspicious_transactions list
+    """
 
     def __init__(self, transactions: list):
-        """REQUIRED: METHOD DOCSTRING"""
+        """This __init__ method initializes transactions for the class
+        DataProcessor.
+
+        Args:
+            transactions (list): A list of dictionaries that contains
+            transaction data. Each transaction in the dictionary contains
+            the account number, transaction type, amount and currency.
+        """
 
         self.__transactions = transactions
         self.__account_summaries = {}
@@ -22,30 +41,62 @@ class DataProcessor:
 
     @property
     def input_data(self) -> list:
-        """REQUIRED: METHOD DOCSTRING"""
+        """Gets the transaction data
+        
+        Returns:
+                list: List of transaction dictionaries
+        """
+        
 
         return self.__transactions
     
     @property
     def account_summaries(self) -> dict:
-        """REQUIRED: METHOD DOCSTRING"""
+        """Gets the account summary data
+
+        Returns:
+                dict: Returns the account data with keys:
+                      account_number
+                      balance
+                      total_deposits
+                      total_withdrawals
+        """
 
         return self.__account_summaries
     
     @property
     def suspicious_transactions(self) -> list:
-        """REQUIRED: METHOD DOCSTRING"""
+        """Gets the list of suspicious transactions
+        
+        Returns:
+                list: Returns the list of suspicious
+                transactions, which are amount above
+                10,000 dollars threshold and the uncommon
+                currencies.
+        """
 
         return self.__suspicious_transactions
     
     @property
     def transaction_statistics(self) -> dict:
-        """REQUIRED: METHOD DOCSTRING"""
+        """Gets the transaction statistics.
+        
+        Returns:
+                dict: Transaction statistics for transaction type
+                which contains the total_amount and transaction_count.
+        """
 
         return self.__transaction_statistics
 
     def process_data(self) -> dict:
-        """REQUIRED: METHOD DOCSTRING"""
+        """This function processes data and then returns account and
+        transaction information. Updates the account summaries, checks
+        for suspicious transactions and updates the transaction statistics.
+
+        Returns:
+               dict: Returns dictionary containing amount summary,
+                     suspicious transactions, and transaction statistics.
+        """
 
         for transaction in self.__transactions:
             self.update_account_summary(transaction)
@@ -57,7 +108,16 @@ class DataProcessor:
                 "transaction_statistics": self.__transaction_statistics}
 
     def update_account_summary(self, transaction: dict) -> None:
-        """REQUIRED: METHOD DOCSTRING"""
+        """This method checks for account number if it is not in account
+        summaries dictionary, then it adds it to the account summaries
+        dictionary. It also checks to see if the transaction type is deposit
+        then it adds the amount to balance and total deposits. Similarly
+        if the transaction type is withdrawal it subtracts from balance
+        and adds to total withdrawals.
+
+        Args:
+             transaction (dict): The transaction data dictionary
+        """
 
         account_number = transaction["Account number"]
         transaction_type = transaction["Transaction type"]
@@ -79,7 +139,12 @@ class DataProcessor:
             self.__account_summaries[account_number]["total_withdrawals"] += amount
 
     def check_suspicious_transactions(self, transaction: dict) -> None:
-        """REQUIRED: METHOD DOCSTRING"""
+        """This method checks to see if amount is above the threshold 10,000
+        dollars and checks to see if the currency is uncommon.
+
+        Args:
+             transaction (dict): The transaction data dictionary
+        """
 
         amount = float(transaction["Amount"])
         currency = transaction["Currency"]
@@ -89,7 +154,14 @@ class DataProcessor:
             self.__suspicious_transactions.append(transaction)
 
     def update_transaction_statistics(self, transaction: dict) -> None:
-        """REQUIRED: METHOD DOCSTRING"""
+        """This method checks to see if a transaction type is not in 
+        transaction statistics, it assigns the total amount and transaction
+        count the value of 0. Otherwise it adds the amount to total amount
+        and plus 1 to the transaction count.
+
+        Args:
+             transaction (dict): The transaction data dictionary
+        """
 
         transaction_type = transaction["Transaction type"]
         amount = float(transaction["Amount"])
@@ -104,7 +176,17 @@ class DataProcessor:
         self.__transaction_statistics[transaction_type]["transaction_count"] += 1
 
     def get_average_transaction_amount(self, transaction_type: str) -> float:
-        """REQUIRED: METHOD DOCSTRING"""
+        """This method calculates the average transaction amount for a transaction
+        type. It returns 0 if the transaction cost is 0 otherwise it returns the average
+        transaction amount.
+
+        Args:
+             transaction_type (str): The transaction type either withdrawal or deposit.
+
+        Returns:
+                float: If the transaction count is 0 then it returns 0, otherwise it
+                returns the average transaction amount.
+        """
         
         total_amount = self.__transaction_statistics[transaction_type]["total_amount"]
         transaction_count = self.__transaction_statistics[transaction_type]["transaction_count"]
