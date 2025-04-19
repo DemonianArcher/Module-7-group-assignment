@@ -4,7 +4,7 @@ This module provides functionality to export processed transaction data in vario
 including account summaries, suspicious transactions, and transaction statistics.
 """
 
-__author__ = "SharefRRC"
+__author__ = "Sharef"
 __version__ = "1.0"
 
 class OutputHandler:
