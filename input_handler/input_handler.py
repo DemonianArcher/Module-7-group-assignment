@@ -1,46 +1,100 @@
-"""REQUIRED MODULE DOCUMENTATION"""
+"""
+InputHandler Module
+
+This module provides functionality to handle input files in CSV and JSON formats.
+It includes methods to read and parse data from these files into a list of transactions.
+
+Classes:
+    InputHandler: Handles input file operations such as reading and parsing data.
+
+Author: Avery Cloutier
+Version: 1.0
+"""
 
 import csv
 import json
 from os import path
 
-__author__ = ""
-__version__ = ""
+__author__ = "Avery Cloutier"
+__version__ = "1.0"
+
 
 class InputHandler:
-    """REQUIRED: CLASS DOCSTRING"""
+    """
+    A class to handle input files and parse their data.
+
+    This class supports reading data from CSV and JSON files. It provides methods
+    to determine the file format, validate file existence, and parse the data into
+    a list of transactions.
+
+    Attributes:
+        file_path (str): The path to the input file.
+    """
 
     def __init__(self, file_path: str):
-        """REQUIRED: METHOD DOCSTRING"""
+        """
+        Initializes the InputHandler with the specified file path.
 
+        Args:
+            file_path (str): The path to the input file.
+        """
         self.__file_path = file_path
 
     @property
     def file_path(self) -> str:
-        """REQUIRED: METHOD DOCSTRING"""
+        """
+        Gets the file path of the input file.
 
+        Returns:
+            str: The file path of the input file.
+        """
         return self.__file_path
 
     def get_file_format(self) -> str:
-        """REQUIRED: METHOD DOCSTRING"""
+        """
+        Determines the format of the input file based on its extension.
+
+        Returns:
+            str: The file format (e.g., 'csv', 'json').
+        """
         return self.__file_path.split(".")[-1]
 
     def read_input_data(self) -> list:
-        """REQUIRED: METHOD DOCSTRING"""
+        """
+        Reads and parses data from the input file.
 
+        This method determines the file format and calls the appropriate method
+        to parse the data.
+
+        Returns:
+            list: A list of transactions parsed from the input file.
+
+        Raises:
+            FileNotFoundError: If the file does not exist.
+            ValueError: If the file format is unsupported.
+        """
         transactions = []
         file_format = self.get_file_format()
-        
+
         if file_format == "csv":
-            transactions =  self.read_csv_data()
+            transactions = self.read_csv_data()
         elif file_format == "json":
             transactions = self.read_json_data()
+        else:
+            raise ValueError(f"Unsupported file format: {file_format}")
 
         return transactions
 
     def read_csv_data(self) -> list:
-        """REQUIRED: METHOD DOCSTRING"""
+        """
+        Reads and parses data from a CSV file.
 
+        Returns:
+            list: A list of transactions parsed from the CSV file.
+
+        Raises:
+            FileNotFoundError: If the file does not exist.
+        """
         if not path.isfile(self.__file_path):
             raise FileNotFoundError(f"File: {self.__file_path} does not exist.")
 
@@ -50,15 +104,19 @@ class InputHandler:
             reader = csv.DictReader(input_file)
             for row in reader:
                 transactions.append(row)
-            
-        return transactions
-            
-    def read_json_data(self) -> list:
-        """REQUIRED: METHOD DOCSTRING"""
 
-        # Research the json.load function so that you 
-        # understand the format of the data once it is
-        # placed into input_data
+        return transactions
+
+    def read_json_data(self) -> list:
+        """
+        Reads and parses data from a JSON file.
+
+        Returns:
+            list: A list of transactions parsed from the JSON file.
+
+        Raises:
+            FileNotFoundError: If the file does not exist.
+        """
         if not path.isfile(self.__file_path):
             raise FileNotFoundError(f"File: {self.__file_path} does not exist.")
 
