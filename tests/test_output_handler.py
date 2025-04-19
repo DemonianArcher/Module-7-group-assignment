@@ -119,6 +119,54 @@ class TestOutputHandler(TestCase):
         
         mock_open.assert_called_once_with("test_stats.csv", "w", newline="")
         self.assertEqual(mock_writer.return_value.writerow.call_count, 3)  # header + 2 transaction types
+    
+    def test_filter_account_summaries_greater_than(self):
+        """Test filtering account summaries with greater than mode."""
+        handler = OutputHandler(self.account_summaries,
+                            self.suspicious_transactions,
+                            self.transaction_statistics)
+        
+        # Filter for balances >= 100
+        filtered = handler.filter_account_summaries("balance", 100, True)
+        self.assertEqual(len(filtered), 1)
+        self.assertEqual(filtered[0]["account_number"], "1002")
+    
+    def test_filter_account_summaries_less_than(self):
+        """Test filtering account summaries with less than mode."""
+        handler = OutputHandler(self.account_summaries,
+                            self.suspicious_transactions,
+                            self.transaction_statistics)
+        
+        # Filter for balances <= 100
+        filtered = handler.filter_account_summaries("balance", 100, False)
+        self.assertEqual(len(filtered), 1)
+        self.assertEqual(filtered[0]["account_number"], "1001")
+
+    def test_filter_account_summaries_invalid_field(self):
+        """Test filtering with invalid field raises ValueError."""
+        handler = OutputHandler(self.account_summaries,
+                            self.suspicious_transactions,
+                            self.transaction_statistics)
+    
+        with self.assertRaises(ValueError):
+            handler.filter_account_summaries("invalid_field", 100, True)
+    
+    @mock.patch('builtins.open', new_callable=mock.mock_open)
+    @mock.patch('csv.writer')
+    def test_write_filtered_summaries_to_csv(self, mock_writer, mock_open):
+        """Test writing filtered summaries to CSV creates correct file."""
+        handler = OutputHandler(self.account_summaries,
+                            self.suspicious_transactions,
+                            self.transaction_statistics)
+        
+        # First filter the data
+        filtered = handler.filter_account_summaries("balance", 100, True)
+        
+        # Then write to CSV
+        handler.write_filtered_summaries_to_csv(filtered, "test_filtered.csv")
+        
+        mock_open.assert_called_once_with("test_filtered.csv", "w", newline="")
+        self.assertEqual(mock_writer.return_value.writerow.call_count, 2)  # header + 1 account
 
 if __name__ == "__main__":
     unittest.main()
