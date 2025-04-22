@@ -31,6 +31,12 @@ class InputHandler:
         file_path (str): The path to the input file.
     """
 
+    # Class-level validation rules (example)
+    VALIDATION_RULES = {
+        'required_keys': {'Transaction ID', 'Account number', 'Date', 'Transaction type', 'Amount', 'Currency', 'Description'},
+        'valid_transaction_types': {'deposit', 'withdrawal', 'transfer'}
+    }
+
     def __init__(self, file_path: str):
         """
         Initializes the InputHandler with the specified file path.
@@ -63,11 +69,11 @@ class InputHandler:
         """
         Reads and parses data from the input file.
 
-        This method determines the file format and calls the appropriate method
-        to parse the data.
+        This method determines the file format, calls the appropriate method
+        to parse the data, and validates the parsed transactions.
 
         Returns:
-            list: A list of transactions parsed from the input file.
+            list: A list of validated transactions parsed from the input file.
 
         Raises:
             FileNotFoundError: If the file does not exist.
@@ -83,7 +89,10 @@ class InputHandler:
         else:
             raise ValueError(f"Unsupported file format: {file_format}")
 
-        return transactions
+        # Validate the transactions using the class-level VALIDATION_RULES
+        validated_transactions = self.data_validation(transactions, self.VALIDATION_RULES)
+
+        return validated_transactions
 
     def read_csv_data(self) -> list:
         """
@@ -124,3 +133,46 @@ class InputHandler:
             transactions = json.load(input_file)
 
         return transactions
+
+    def data_validation(self, transactions: list, validation_rules: dict) -> list:
+        """
+        Validates the parsed data.
+
+        This method filters out invalid transactions from the provided list. A valid transaction
+        is a dictionary that contains all the required keys and satisfies the validation rules
+        provided in the `validation_rules` parameter.
+
+        Args:
+            transactions (list): A list of dictionaries containing transaction data.
+            validation_rules (dict): A dictionary containing validation rules, including:
+                - 'required_keys': A set of keys that must be present in each transaction.
+                - 'valid_transaction_types': A set of valid transaction types.
+
+        Returns:
+            list: A list of dictionaries containing only valid transactions.
+        """
+        required_keys = validation_rules.get('required_keys', set())
+        valid_transaction_types = validation_rules.get('valid_transaction_types', set())
+
+        valid_transactions = []
+        for transaction in transactions:
+            # Check if the transaction contains all required keys
+            if not isinstance(transaction, dict) or not required_keys.issubset(transaction.keys()):
+                continue
+
+            # Validate 'Amount' (must be a non-negative numeric value)
+            try:
+                amount = float(transaction['Amount'])
+                if amount < 0:
+                    continue
+            except (ValueError, TypeError):
+                continue
+
+            # Validate 'Transaction type' (must be one of the valid types)
+            if transaction['Transaction type'] not in valid_transaction_types:
+                continue
+
+            # If all validations pass, add the transaction to the valid list
+            valid_transactions.append(transaction)
+
+        return valid_transactions

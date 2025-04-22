@@ -111,6 +111,41 @@ class InputHandlerTests(TestCase):
         with self.assertRaises(ValueError):
             handler.read_input_data()
 
+    def test_data_validation(self):
+        """Tests the data_validation method."""
+        handler = InputHandler("dummy_path")
+
+        # Define validation rules
+        validation_rules = {
+            'required_keys': {'Transaction ID', 'Account number', 'Date', 'Transaction type', 'Amount', 'Currency', 'Description'},
+            'valid_transaction_types': {'deposit', 'withdrawal', 'transfer'}
+        }
+
+        # Define test transactions
+        transactions = [
+            {"Transaction ID": "1", "Account number": "1001", "Date": "2023-03-01", "Transaction type": "deposit", "Amount": "1000", "Currency": "CAD", "Description": "Salary"},
+            {"Transaction ID": "2", "Account number": "1002", "Date": "2023-03-01", "Transaction type": "withdrawal", "Amount": "-500", "Currency": "CAD", "Description": "Groceries"},
+            {"Transaction ID": "3", "Account number": "1003", "Date": "2023-03-02", "Transaction type": "invalid_type", "Amount": "200", "Currency": "CAD", "Description": "Shopping"},
+            {"Transaction ID": "4", "Account number": "1004", "Date": "2023-03-03", "Transaction type": "transfer", "Amount": "abc", "Currency": "CAD", "Description": "Transfer to Savings"},
+            {"Transaction ID": "5", "Account number": "1005", "Date": "2023-03-04", "Transaction type": "deposit", "Amount": "1500", "Currency": "CAD", "Description": "Bonus"}
+        ]
+
+        # Validate transactions
+        valid_transactions = handler.data_validation(transactions, validation_rules)
+
+        # Expected valid transactions
+        expected_transactions = [
+            {"Transaction ID": "1", "Account number": "1001", "Date": "2023-03-01", "Transaction type": "deposit", "Amount": "1000", "Currency": "CAD", "Description": "Salary"},
+            {"Transaction ID": "5", "Account number": "1005", "Date": "2023-03-04", "Transaction type": "deposit", "Amount": "1500", "Currency": "CAD", "Description": "Bonus"}
+        ]
+
+        # Assertions
+        self.assertEqual(valid_transactions, expected_transactions)
+        self.assertEqual(len(valid_transactions), 2)
+        self.assertNotIn({"Transaction ID": "2", "Account number": "1002", "Date": "2023-03-01", "Transaction type": "withdrawal", "Amount": "-500", "Currency": "CAD", "Description": "Groceries"}, valid_transactions)
+        self.assertNotIn({"Transaction ID": "3", "Account number": "1003", "Date": "2023-03-02", "Transaction type": "invalid_type", "Amount": "200", "Currency": "CAD", "Description": "Shopping"}, valid_transactions)
+        self.assertNotIn({"Transaction ID": "4", "Account number": "1004", "Date": "2023-03-03", "Transaction type": "transfer", "Amount": "abc", "Currency": "CAD", "Description": "Transfer to Savings"}, valid_transactions)
+
 
 if __name__ == "__main__":
     unittest.main()
