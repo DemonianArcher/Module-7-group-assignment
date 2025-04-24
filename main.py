@@ -7,7 +7,7 @@ from input_handler.input_handler import InputHandler
 from data_processor.data_processor import DataProcessor
 from output_handler.output_handler import OutputHandler
 
-__author__ = "Muhammad Rahmani, Sharef Islam, Avery Cloutier"
+__author__ = "Muhammad Rahmani"
 __version__ = "24-April-2025"
 
 def setup_logging(team_number: int) -> logging.Logger:
