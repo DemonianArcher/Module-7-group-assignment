@@ -8,6 +8,9 @@ generates account sumaries and also computes transaction statistics.
 __author__ = "Muhammad Rahmani"
 __version__ = "17-April-2025"
 
+import logging
+from datetime import datetime
+
 class DataProcessor:
     """The data processor class processes financial transaction
     data.
@@ -24,7 +27,9 @@ class DataProcessor:
     those currencies are added to the suspicious_transactions list
     """
 
-    def __init__(self, transactions: list):
+    def __init__(self, transactions: list, logging_level: str = "WARNING", 
+                 logging_format: str = "%(asctime)s = %(levelname)s - %(message)s",
+                 log_file: str = ""):
         """This __init__ method initializes transactions for the class
         DataProcessor.
 
@@ -32,12 +37,39 @@ class DataProcessor:
             transactions (list): A list of dictionaries that contains
             transaction data. Each transaction in the dictionary contains
             the account number, transaction type, amount and currency.
+            
+            logging_level (str): Minimum logging level (DEBUG, INFO, WARNING,
+            ERROR, CRITICAL). Default is WARNING.
+
+            logging_format (str): Format string for log messages. Default is
+            "{timestamp} - {log-level} - {log-message}".
+
+            log_file (str): Path to log file. Default is empty string (console logging)
         """
 
         self.__transactions = transactions
         self.__account_summaries = {}
         self.__suspicious_transactions = []
         self.__transaction_statistics = {}
+
+        # Configures logging
+        self.logger = logging.getLogger(__name__)
+
+        # Converts string logging level to actual logging level
+        level = getattr(logging, logging_level.upper(), logging.WARNING)
+        self.logger.setLevel(level)
+
+        # Creates formatter
+        formatter = logging.Formatter(logging_format)
+
+        # Creates handler based on whether log file is specified
+        if log_file:
+            handler = logging.FileHandler(log_file)
+        else:
+            handler = logging.StreamHandler()
+
+            handler.setFormatter(formatter)
+            self.logger.addHandler(handler)
 
     @property
     def input_data(self) -> list:
@@ -102,6 +134,10 @@ class DataProcessor:
             self.update_account_summary(transaction)
             self.check_suspicious_transactions(transaction)
             self.update_transaction_statistics(transaction)
+        
+        # logs "Data Processing Complete" when the data processing has
+        # completed.
+        self.logger.info("Data Processing Complete")
 
         return {"account_summaries": self.__account_summaries,
                 "suspicious_transactions": self.__suspicious_transactions,
@@ -138,6 +174,9 @@ class DataProcessor:
             self.__account_summaries[account_number]["balance"] -= amount
             self.__account_summaries[account_number]["total_withdrawals"] += amount
 
+        # logs Account Summary Updated with the account number
+        self.logger.info(f"Account summary updated: {account_number}")
+
     def check_suspicious_transactions(self, transaction: dict) -> None:
         """This method checks to see if amount is above the threshold 10,000
         dollars and checks to see if the currency is uncommon.
@@ -152,6 +191,7 @@ class DataProcessor:
         if amount > self.LARGE_TRANSACTION_THRESHOLD \
             or currency in self.UNCOMMON_CURRENCIES:
             self.__suspicious_transactions.append(transaction)
+            self.logger.warning(f"Suspicious transaction: {transaction}")
 
     def update_transaction_statistics(self, transaction: dict) -> None:
         """This method checks to see if a transaction type is not in 
@@ -174,6 +214,7 @@ class DataProcessor:
 
         self.__transaction_statistics[transaction_type]["total_amount"] += amount
         self.__transaction_statistics[transaction_type]["transaction_count"] += 1
+        self.logger.info(f"Updated transaction statistics for: {transaction_type}")
 
     def get_average_transaction_amount(self, transaction_type: str) -> float:
         """This method calculates the average transaction amount for a transaction

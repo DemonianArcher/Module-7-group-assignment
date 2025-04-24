@@ -1,0 +1,24 @@
+2025-04-24 05:57:04,900 - INFO - Starting financial data processing system
+2025-04-24 05:57:04,900 - INFO - Reading input data from: c:\Users\__MAx\OneDrive\Documents\Education\rrc\comp-1327\projects\module-7\rahmani-muhammad-assignment-7-milestone-2\Module-7-group-assignment\input/input_data.csv
+2025-04-24 05:57:04,901 - INFO - Successfully read 30 transactions
+2025-04-24 05:57:04,901 - INFO - Initializing DataProcessor with INFO level logging
+2025-04-24 05:57:04,904 - INFO - Processing transaction data
+2025-04-24 05:57:04,906 - INFO - Data processing completed successfully
+2025-04-24 05:57:04,907 - INFO - Processed 7 accounts
+2025-04-24 05:57:04,907 - INFO - Found 7 suspicious transactions
+2025-04-24 05:57:04,907 - INFO - Initializing OutputHandler
+2025-04-24 05:57:04,907 - INFO - Writing output files
+2025-04-24 05:57:04,909 - INFO - Output files written to: {'account_summaries': 'c:\\Users\\__MAx\\OneDrive\\Documents\\Education\\rrc\\comp-1327\\projects\\module-7\\rahmani-muhammad-assignment-7-milestone-2\\Module-7-group-assignment\\output/output_data_account_summaries.csv', 'suspicious_transactions': 'c:\\Users\\__MAx\\OneDrive\\Documents\\Education\\rrc\\comp-1327\\projects\\module-7\\rahmani-muhammad-assignment-7-milestone-2\\Module-7-group-assignment\\output/output_data_suspicious_transactions.csv', 'transaction_statistics': 'c:\\Users\\__MAx\\OneDrive\\Documents\\Education\\rrc\\comp-1327\\projects\\module-7\\rahmani-muhammad-assignment-7-milestone-2\\Module-7-group-assignment\\output/output_data_transaction_statistics.csv'}
+2025-04-24 05:57:04,909 - INFO - Financial data processing completed successfully
+2025-04-24 05:57:08,296 - INFO - Starting financial data processing system
+2025-04-24 05:57:08,296 - INFO - Reading input data from: c:\Users\__MAx\OneDrive\Documents\Education\rrc\comp-1327\projects\module-7\rahmani-muhammad-assignment-7-milestone-2\Module-7-group-assignment\input/input_data.csv
+2025-04-24 05:57:08,297 - INFO - Successfully read 30 transactions
+2025-04-24 05:57:08,297 - INFO - Initializing DataProcessor with INFO level logging
+2025-04-24 05:57:08,298 - INFO - Processing transaction data
+2025-04-24 05:57:08,300 - INFO - Data processing completed successfully
+2025-04-24 05:57:08,300 - INFO - Processed 7 accounts
+2025-04-24 05:57:08,300 - INFO - Found 7 suspicious transactions
+2025-04-24 05:57:08,300 - INFO - Initializing OutputHandler
+2025-04-24 05:57:08,300 - INFO - Writing output files
+2025-04-24 05:57:08,302 - INFO - Output files written to: {'account_summaries': 'c:\\Users\\__MAx\\OneDrive\\Documents\\Education\\rrc\\comp-1327\\projects\\module-7\\rahmani-muhammad-assignment-7-milestone-2\\Module-7-group-assignment\\output/output_data_account_summaries.csv', 'suspicious_transactions': 'c:\\Users\\__MAx\\OneDrive\\Documents\\Education\\rrc\\comp-1327\\projects\\module-7\\rahmani-muhammad-assignment-7-milestone-2\\Module-7-group-assignment\\output/output_data_suspicious_transactions.csv', 'transaction_statistics': 'c:\\Users\\__MAx\\OneDrive\\Documents\\Education\\rrc\\comp-1327\\projects\\module-7\\rahmani-muhammad-assignment-7-milestone-2\\Module-7-group-assignment\\output/output_data_transaction_statistics.csv'}
+2025-04-24 05:57:08,302 - INFO - Financial data processing completed successfully
