@@ -6,6 +6,8 @@ and updatate transaction statistics that are in the DataProcessor class.
 import unittest
 from unittest import TestCase
 from data_processor.data_processor import DataProcessor
+import logging 
+from io import StringIO
 
 __author__ = "Muhammad Rahmani"
 __version__ = "18-April-2025"
@@ -61,6 +63,27 @@ class TestDataProcessor(TestCase):
             "Currency": "CAD",
             "Description": "ATM"
         }
+
+        self.transactions = [
+            self.regular_deposit,
+            self.large_deposit,
+            self.uncommon_currency,
+            self.regular_withdrawal
+        ]
+
+        # Setup of log capture
+        self.log_stream = StringIO()
+        handler = logging.StreamHandler(self.log_stream)
+        handler.setFormatter(logging.Formatter("%(levelname)s:%(message)s"))
+       
+        self.processor = DataProcessor(
+            self.transactions,
+            logging_level = "INFO",
+            logging_format = "%(levelname)s:%(message)s"
+        )
+
+        # Replaces existing handlers with our test handler
+        self.processor.logger.handlers = [handler]
 
 
     # Define unit test functions below
@@ -166,6 +189,26 @@ class TestDataProcessor(TestCase):
         self.assertEqual(statistics["total_amount"], 1000)
         self.assertEqual(statistics["transaction_count"], 1)
 
+    def test_logging_output(self):
+        """Tests to see if the logging output is displayed as expected.
+        """
+        # Arrange
+        expected = [
+            "INFO:Account summary updated: 1001",
+            "WARNING:Suspicious transaction:",
+            "INFO:Updated transaction statistics for: deposit",
+            "INFO:Updated transaction statistics for: withdrawal",
+            "INFO:Data Processing Complete"
+        ]
+
+        # Act
+        self.processor.process_data()
+        log_output = self.log_stream.getvalue()
+
+        # Assert
+        for expected_log in expected:
+            with self.subTest(expected_log = expected_log):
+                self.assertIn(expected_log, log_output)
 
 if __name__ == "__main__":
     unittest.main()
